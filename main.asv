@@ -1,0 +1,36 @@
+clear; clc;
+
+file = 'b1';
+data = load(sprintf('D:/OneDrive - ump.edu.my/Atik_Home/Data Files/Blade Data/data_20150516_20hz/%s_20hz_16.mat',file));
+data = data.Channel_003;
+
+path = 'D:/OneDrive - ump.edu.my/Atik_Home/Writing/WCNN/Augmentation/Data';
+trainDir = sprintf('%s/%s/Train',path,file);
+augDir = sprintf('%s/%s/Aug',path,file);
+valDir = sprintf('%s/%s/Val',path,file);
+testDir = sprintf('%s/%s/Test',path,file);
+
+NstdMax = 0.2; NstdMin = 0.1; y1 = {}; y2 = {};
+for i = 1 : 400
+    while i <= 200
+        y = data(k:k+499, :);
+        scalogram(y,trainDir,i);
+        for k = 1:100
+            Nstd = (NstdMax-NstdMin).*rand(1,1) + NstdMin;
+            x = randn(1,500); 
+            x = x - mean(x);
+            x = x -std(x);
+            
+            y1{k} = y + (x.*Nstd);
+            y2{k} = y - (x.*Nstd);
+        end 
+        y1 = cell2mat(y1);
+        y1 = sum(y1)/100;
+        y2 = cell2mat(y2);
+        y2 = sum(y2)/100;
+        z = (y1+y2)/2;
+        scalogram(y,augDir,i);
+    end
+    while i >= 201  
+
+end
