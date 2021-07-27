@@ -17,11 +17,11 @@ for i = 1 : 400
         
         for k = 1:100
             Nstd = (NstdMax-NstdMin).*rand(1,1) + NstdMin;
-            x1 = randn(600,1); 
+            x1 = randn(length(y),1); 
             x1 = x1 - mean(x1);
             x1 = x1 -std(x1);
 
-            x2 = randn(600,1); 
+            x2 = randn(length(y),1); 
             x2 = x2 - mean(x2);
             x2 = x2 -std(x2);
 
