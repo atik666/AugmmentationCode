@@ -1,8 +1,6 @@
 clear; clc;
 
-file = 'b1';
-data = load(sprintf('D:/OneDrive - ump.edu.my/Atik_Home/Data Files/Blade Data/data_20150516_20hz/%s_20hz_16.mat',file));
-data = data.Channel_003;
+normal = load ('D:\OneDrive - ump.edu.my\Atik_Home\Data Files\Bearing Data Center\Normal Baseline Data\97.mat');
 
 path = 'D:/OneDrive - ump.edu.my/Atik_Home/Writing/Augmentation/Data';
 trainDir = sprintf('%s/%s/Train',path,file);
@@ -19,12 +17,16 @@ for i = 1 : 400
         
         for k = 1:100
             Nstd = (NstdMax-NstdMin).*rand(1,1) + NstdMin;
-            x = randn(500,1); 
-            x = x - mean(x);
-            x = x -std(x);
-            
-            y1{k} = y + (x.*Nstd);
-            y2{k} = y - (x.*Nstd);
+            x1 = randn(600,1); 
+            x1 = x1 - mean(x1);
+            x1 = x1 -std(x1);
+
+            x2 = randn(600,1); 
+            x2 = x2 - mean(x2);
+            x2 = x2 -std(x2);
+
+            y1{k} = y + (x1.*Nstd);
+            y2{k} = y - (x2.*Nstd);
         end 
         y11 = cell2mat(y1);
         y11 = sum(y11,2)/100;
@@ -38,7 +40,7 @@ for i = 1 : 400
          j = j+ 500;
     elseif i >= 301 && i <= 400
          y = data(j:j+499, :);
-         scalogram(y,valDir,i);
+         scalogram(y,testDir,i);
          j = j+ 500;
     end
 end
