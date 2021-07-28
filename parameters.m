@@ -6,16 +6,16 @@ t = 1/160:(0.05-1/160)/(40000*0.05):0.05;
 % x1 = 1.5 .* 10.^(-800.*(t)) * sin(2*pi*5000.*t);
 % x2 = 0.2*(1+cos(2*pi*100*t))*cos(2*pi*100*t);
 
-for n = 1:2001
-    x1{n} = 1.5 * 10.^(-800.*(t(n))) * sin(2*pi*5000*n);
-    x2{n} = 0.2*(1+cos(2*pi*100*n)).*cos(2*pi*1000*n);
-    x3{n} = cos(2*pi*0.05*(n - 1));
-end
+% for n = 1:2001
+%     x1{n} = 1.5 * 10.^(-800.*(t(n))) * sin(2*pi*5000*n);
+%     x2{n} = 0.2*(1+cos(2*pi*100*n)).*cos(2*pi*1000*n);
+%     x3{n} = cos(2*pi*0.05*(n - 1));
+% end
 
-normal = load ('D:\OneDrive - ump.edu.my\Atik_Home\Data Files\Bearing Data Center\Normal Baseline Data\97.mat');
-y = normal.X097_DE_time(1:600);
+y = csvread('simulatedSignal.csv');
 
 NstdMax = 0.2; NstdMin = 0.1;
+
 for k = 1:100
     Nstd = (NstdMax-NstdMin).*rand(1,1) + NstdMin;
     x1 = randn(length(y),1); 
@@ -39,6 +39,11 @@ z = (y11+y22)/2;
 rms2 = rms(abs(sum(y)-sum(z)))./rms(z);
 
 a = (1/length(y))*sum(z.^2);
-b = (1/length(y))*sum(y.^2) - a;
+b = abs((1/length(y))*sum(y.^2) - a);
+corr = corR(y, z);
+snr = 10*log10(a/b);
 
+signal = [sig, z];
+
+csvwrite('allSig.csv',signal);
         
